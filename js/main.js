@@ -1,19 +1,18 @@
 const scenes = [
-    { text: "Ada sesuatu yang telah menunggu lama.", btnText: "Lewati" },
+    { text: "Ada sesuatu yang menunggu lama.", btnText: "Lewati" },
     { text: "Bukan aku tidak ingin mengatakannya.", btnText: "Lewati" },
     { text: "Aku hanya belum ketemu waktu yang tepat.", btnText: "Lewati" },
-    { text: "Selama hampir satu tahun, semua ini hanya kusimpan sendiri.", btnText: "Lewati" },
-    { text: "Aku pikir... mungkin perasaan ini akan hilang jika dibiarkan.", btnText: "Lewati" },
+    { text: "Selama hampir satu tahun, semua ini cuma kusimpan sendiri.", btnText: "Lewati" },
+    { text: "Aku pikir... mungkin perasaan ini akan hilang kalo dibiarkan.", btnText: "Lewati" },
     { text: "Setiap hari yang berlalu justru membuatku semakin yakin.", btnText: "Lewati" },
     { text: "Hari ini, aku memilih untuk tidak menyimpannya sendirian.", btnText: "Lewati" },
     { text: "Karena ada yang seharusnya sudah kamu ketahui sejak lama.", btnText: "Lewati" },
-    { text: "Aku memiliki perasaan kepadamu.", btnText: "Lewati" },
-    { text: "Aku tidak tahu bagaimana jawabanmu nanti.", btnText: "Lewati" },
-    { text: "Dan aku juga tidak ingin maksa kamu buat merasakan hal yang sama.", btnText: "Lewati" },
+    { text: "Aku punya perasaan sama kamu.", btnText: "Lewati" },
+    { text: "Aku ga bagaimana jawabanmu nanti.", btnText: "Lewati" },
+    { text: "Dan aku juga tidak maksa kamu buat merasakan hal yang sama.", btnText: "Lewati" },
     { text: "Aku cuma pengen jujur.", btnText: "Lewati" },
     { text: "Setidaknya sekali.", btnText: "Lewati" },
-    { text: "Terima kasih,", btnText: "Lewati" },
-    { text: "kamu telah menjadi seseorang yang berarti dan menghibur dalam hidupku.", btnText: "Lewati" },
+    { text: "Terima kasih, kamu telah menjadi seseorang yang berarti dan menghibur dalam hidupku.", btnText: "Lewati" },
     { text: "Apa pun jawabanmu nanti...<br>Aku tetep bersyukur karena akhirnya aku sudah menyampaikan semua yang selama ini kupendam. (WKWK)", btnText: "Lewati" },
     { text: "Thank you woikk!! 🤍", btnText: "MEMORIES" }
 ];
@@ -69,7 +68,7 @@ actionBtn.addEventListener('click', () => {
 function nextScene() {
     // 1. Transition Out
     sceneElement.classList.add('scene-hidden');
-    
+
     // Hide current scene images if any
     currentSceneImages.forEach(img => {
         img.style.opacity = '0';
@@ -227,7 +226,7 @@ function preloadChatImages() {
 function spawnChatImages() {
     const container = document.getElementById('journey-container');
     if (!container || validChatImages.length === 0) return;
-    
+
     // Sort images numerically if they are named 1.jpg, 2.jpg, etc.
     const sortedImages = [...validChatImages].sort((a, b) => {
         const numA = parseInt(a.split('/').pop().split('.')[0]) || 0;
@@ -236,18 +235,18 @@ function spawnChatImages() {
     });
 
     container.innerHTML = ''; // Clear just in case
-    
+
     sortedImages.forEach((src, index) => {
         const item = document.createElement('div');
         item.className = 'journey-item';
-        
+
         const img = document.createElement('img');
         img.src = src;
         img.className = 'journey-photo';
-        
+
         item.appendChild(img);
         container.appendChild(item);
-        
+
         // Use IntersectionObserver to fade them in as they scroll into view
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -257,7 +256,7 @@ function spawnChatImages() {
                 }
             });
         }, { threshold: 0.2 });
-        
+
         observer.observe(item);
     });
 
@@ -268,20 +267,20 @@ function spawnChatImages() {
         for (let i = 0; i < 40; i++) {
             const firefly = document.createElement('div');
             firefly.className = 'pink-firefly';
-            
+
             const size = Math.random() * 3 + 1;
             firefly.style.width = size + 'px';
             firefly.style.height = size + 'px';
-            
+
             firefly.style.left = Math.random() * 100 + 'vw';
             firefly.style.top = Math.random() * 100 + 'vh';
-            
+
             firefly.style.setProperty('--dx', (Math.random() * 100 - 50) + 'px');
             firefly.style.setProperty('--dy', (Math.random() * 100 - 50) + 'px');
-            
+
             firefly.style.animationDuration = (Math.random() * 10 + 5) + 's';
             firefly.style.animationDelay = (Math.random() * 5) + 's';
-            
+
             fireflyContainer.appendChild(firefly);
         }
     }
@@ -292,7 +291,7 @@ let currentSceneImages = [];
 function showSceneImages() {
     const container = document.getElementById('scene-images-container');
     if (!container || validChatImages.length === 0) return;
-    
+
     // Fade out and remove old images
     currentSceneImages.forEach(img => {
         img.style.opacity = '0';
@@ -300,35 +299,35 @@ function showSceneImages() {
         setTimeout(() => img.remove(), 1500);
     });
     currentSceneImages = [];
-    
+
     // Pick 1 to 3 random images
     const numImages = Math.floor(Math.random() * 3) + 1;
-    
+
     for (let i = 0; i < numImages; i++) {
         const img = document.createElement('img');
         img.src = validChatImages[Math.floor(Math.random() * validChatImages.length)];
         img.className = 'scene-image';
-        
+
         const size = Math.random() * 250 + 200; // 200px to 450px
         const posX = Math.random() * 80 + 10; // 10% to 90%
         const posY = Math.random() * 80 + 10;
-        
+
         img.style.width = size + 'px';
         img.style.height = size + 'px';
-        img.style.left = `calc(${posX}vw - ${size/2}px)`;
-        img.style.top = `calc(${posY}vh - ${size/2}px)`;
-        
+        img.style.left = `calc(${posX}vw - ${size / 2}px)`;
+        img.style.top = `calc(${posY}vh - ${size / 2}px)`;
+
         const startRot = Math.random() * 60 - 30;
         const endRot = startRot + (Math.random() * 40 - 20);
         const endPosX = (Math.random() * 80 - 40);
         const endPosY = (Math.random() * 80 - 40);
-        
+
         img.style.transform = `rotate(${startRot}deg) scale(0.9)`;
         img.dataset.endTransform = `translate(${endPosX}px, ${endPosY}px) rotate(${endRot}deg) scale(1.1)`;
-        
+
         container.appendChild(img);
         currentSceneImages.push(img);
-        
+
         // Slight delay to allow DOM to register the initial transform before transitioning
         setTimeout(() => {
             img.style.opacity = (Math.random() * 0.15 + 0.1).toString(); // Opacity 0.1 to 0.25 for readability
@@ -416,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cardTime) {
         cardTime.addEventListener('click', () => {
             sendToDiscord('🤍 Memilih opsi "Aku butuh waktu"');
-            
+
             cardsContainer.style.opacity = '0';
             cardsContainer.style.filter = 'blur(8px)';
             cardsContainer.style.transform = 'translateY(20px)';
@@ -426,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 cardsContainer.style.display = 'none';
                 cardsContainer.style.filter = 'none';
 
-                finalParagraph.textContent = "Tidak apa-apa. Terima kasih sudah meluangkan waktu untuk membaca semuanya. Aku akan menghargai apa pun keputusanmu nanti.";
+                finalParagraph.textContent = "Tidak apa-apa. Terima kasih sudah membaca semuanya. Aku akan menghargai apa pun keputusanmu nanti.";
                 finalParagraph.style.opacity = '1';
 
                 confirmTimeContainer.style.display = 'flex';
@@ -439,7 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cardReply) {
         cardReply.addEventListener('click', () => {
             sendToDiscord('💌 Memilih opsi "Aku ingin menjawab"');
-            
+
             cardsContainer.style.opacity = '0';
             cardsContainer.style.filter = 'blur(10px)';
             cardsContainer.style.transform = 'translateY(20px)';
@@ -459,9 +458,9 @@ document.addEventListener('DOMContentLoaded', () => {
         sendReplyBtn.addEventListener('click', () => {
             const textarea = document.getElementById('reply-textarea');
             const replyText = textarea.value.trim() || "(Tidak ada pesan tertulis)";
-            
+
             sendToDiscord('📝 Mengirim balasan', replyText);
-            
+
             const sendReplyText = document.getElementById('send-reply-text');
             sendReplyText.innerHTML = '<span class="loading-spinner"></span>';
             sendReplyBtn.style.pointerEvents = 'none';
@@ -480,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     finalBadgeText.textContent = "Pesan Terkirim";
                     finalTitle.textContent = "Terima kasih.";
-                    finalParagraph.textContent = "Apa pun isi jawabanmu, terima kasih karena sudah meluangkan waktu untuk membacanya dan memberikan balasan. Itu sudah sangat berarti bagiku.";
+                    finalParagraph.textContent = "Apa pun isi jawabanmu, terima kasih sudah meluangkan waktu untuk membaca dan kasih balasan. Itu sudah sangat berarti buatku.";
 
                     finalParagraph.style.opacity = '1';
 
@@ -781,7 +780,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Start text reading
                         sceneElement.classList.remove('scene-enter');
                         startAutoNext();
-                        
+
                         // Show first batch of abstract images
                         showSceneImages();
 
