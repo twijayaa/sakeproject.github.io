@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sebuah Pesan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Fullscreen Overlay -->
+    <div id="fullscreen-overlay" class="fullscreen-overlay">
+        <div class="overlay-content">
+            <h2>Pengalaman Sinematik</h2>
+            <p>Situs ini didesain khusus untuk layar penuh (fullscreen).</p>
+            <button id="enter-fullscreen-btn" class="action-btn">
+                Mulai Pengalaman
+                <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bg-music" src="assets/music/Justin Timberlake - Mirrors.mp3" preload="metadata"></audio>
+
+    <!-- Side Panels -->
+    <div class="side-panel left-panel hidden" id="left-panel">
+        <button class="toggle-btn toggle-left" id="toggle-left-btn">&gt;</button>
+        <div class="music-player">
+            <div class="record-wrapper">
+                <div class="record" id="record-disk">
+                    <div class="record-center"></div>
+                </div>
+            </div>
+            <div class="track-info">
+                <div class="track-title">Mirrors</div>
+                <div class="track-artist">Justin Timberlake</div>
+            </div>
+            <button id="play-pause-btn" class="play-btn">
+                <svg class="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                </svg>
+                <svg class="pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
+                    style="display:none;">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+            </button>
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="time-info">
+                <span id="current-time">0:00</span>
+                <span id="total-time">0:00</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-panel right-panel hidden" id="right-panel">
+        <button class="toggle-btn toggle-right" id="toggle-right-btn">&lt;</button>
+        <div class="lyrics-wrapper">
+            <div class="lyrics-container" id="lyrics-container">
+                <!-- Lyrics will be generated via JS -->
+            </div>
+        </div>
+    </div>
+    <!-- Background effects -->
+    <div class="background">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="noise"></div>
+        <div id="scene-images-container" class="scene-images-container"></div>
+        <div class="butterflies">
+
+            <div class="butterfly-container b1">
+                <div class="butterfly">
+                    <div class="wing wing-left"></div>
+                    <div class="wing wing-right"></div>
+                </div>
+            </div>
+            <div class="butterfly-container b2">
+                <div class="butterfly">
+                    <div class="wing wing-left"></div>
+                    <div class="wing wing-right"></div>
+                </div>
+            </div>
+            <div class="butterfly-container b3">
+                <div class="butterfly">
+                    <div class="wing wing-left"></div>
+                    <div class="wing wing-right"></div>
+                </div>
+            </div>
+            <div class="butterfly-container b4">
+                <div class="butterfly">
+                    <div class="wing wing-left"></div>
+                    <div class="wing wing-right"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="container">
+        <div id="scene" class="scene scene-enter">
+            <div class="badge" id="badge">
+                <span class="badge-icon">✦</span>
+                <span class="badge-text">Sebuah Pesan</span>
+            </div>
+
+            <h1 id="main-text" class="main-text">Ada sesuatu yang telah menunggu lama.</h1>
+        </div>
+
+        <!-- Final Choice Scene -->
+        <div id="final-scene" class="scene scene-hidden" style="display: none; width: 100%;">
+            <div class="badge" id="final-badge">
+                <span class="badge-icon">✦</span>
+                <span class="badge-text" id="final-badge-text">Akhir Perjalanan</span>
+            </div>
+
+            <h1 class="main-text" id="final-title" style="margin-bottom: 1.5rem; font-size: 2.2rem;">Terima kasih sudah
+                membaca sampai akhir.</h1>
+
+            <div id="final-content-wrapper"
+                style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                <p class="final-paragraph" id="final-paragraph"
+                    style="margin-bottom: 2.5rem; font-size: 1.05rem; color: rgba(255, 255, 255, 0.7); line-height: 1.6; max-width: 600px;">
+                    Aku tidak pernah berharap kamu harus langsung memberikan jawaban. Perasaan bukan sesuatu yang harus
+                    diputuskan dalam beberapa menit. Yang paling penting bagiku adalah kamu sudah mengetahui semua yang
+                    selama ini kusimpan.
+                </p>
+
+                <div class="cards-container" id="cards-container"
+                    style="display: flex; gap: 1.5rem; justify-content: center; opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); flex-wrap: wrap;">
+                    <div class="glass-card" id="card-time">
+                        <h3 class="card-title">🤍 Aku butuh waktu</h3>
+                        <p class="card-desc">Aku ingin memikirkan semuanya terlebih dahulu.</p>
+                    </div>
+                    <div class="glass-card" id="card-reply">
+                        <h3 class="card-title">💌 Aku ingin menjawab</h3>
+                        <p class="card-desc">Aku ingin menyampaikan sesuatu.</p>
+                    </div>
+                </div>
+
+                <div id="reply-container"
+                    style="display: none; opacity: 0; transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); width: 100%; max-width: 500px;">
+                    <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem; font-size: 0.95rem;">Jika kamu ingin
+                        mengatakan sesuatu, tuliskan di sini.</p>
+                        
+                    <textarea class="glass-textarea" id="reply-textarea"
+                        placeholder="Tuliskan apa pun yang ingin kamu sampaikan..." rows="5"></textarea>
+                    <button class="action-btn premium-btn" id="send-reply-btn"
+                        style="margin-top: 1.5rem; width: 100%; justify-content: center;">
+                        <span id="send-reply-text">Kirim Balasan</span>
+                    </button>
+                </div>
+
+                <div id="confirm-time-container"
+                    style="display: none; opacity: 0; transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); flex-direction: column; align-items: center; margin-top: -1rem;">
+                    <button class="action-btn" id="finish-btn">Selesai</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Reading Progress and Skip Button -->
+    <div class="scene-progress-container">
+        <div class="scene-progress" id="scene-progress"></div>
+    </div>
+
+    <button id="action-btn" class="action-btn skip-btn">
+        <span id="btn-text">Lewati</span>
+        <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+    </button>
+
+    <!-- Closing Scene -->
+    <div id="closing-scene" class="closing-scene" style="display: none; opacity: 0; overflow-y: auto; overflow-x: hidden; flex-direction: column; justify-content: flex-start; scroll-behavior: smooth;">
+        
+        <!-- Fireflies specifically for the memories scene -->
+        <div id="closing-fireflies" class="closing-fireflies"></div>
+
+        <div class="heart-wrapper" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative;">
+            <div class="heart-center">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="heart-text-svg">
+                    <path id="heartPath"
+                        d="M 100, 50 C 100, 50 80, 20 40, 20 C 0, 20 0, 70 0, 70 C 0, 110 100, 180 100, 180 C 100, 180 200, 110 200, 70 C 200, 70 200, 20 160, 20 C 120, 20 100, 50 100, 50 Z"
+                        fill="none" />
+                    <text class="heart-text-glow" font-size="15" font-weight="600" letter-spacing="3" text-anchor="middle">
+                        <textPath href="#heartPath" startOffset="50%">
+                            Chelssea • Chelssea • Chelssea • Chelssea • Chelssea • Chelssea
+                        </textPath>
+                    </text>
+                </svg>
+            </div>
+            
+            <div class="scroll-down-indicator" style="position: absolute; bottom: 3rem; color: rgba(255, 138, 128, 0.7);">
+                Memories
+                <br>↓
+            </div>
+        </div>
+
+        <div id="journey-container" class="journey-container">
+            <!-- JS will append journey items here -->
+        </div>
+
+        <div class="closing-message" style="text-align: center; margin: 2rem 2rem 6rem 2rem; color: rgba(255, 138, 128, 0.8); font-style: italic; font-size: 1.1rem; line-height: 1.6; animation: pulseMessage 3s infinite alternate;">
+            "udah ah, aku capek buatnya, <br>kapan-kapan kita buat yang lebih wow yeahh :D"
+        </div>
+
+        <button id="back-to-start-btn" class="back-btn" style="position: relative; margin: 2rem auto 4rem auto; bottom: 0; right: 0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            Kembali
+        </button>
+    </div>
+
+    <!-- Memories Button for Final Scene -->
+    <button id="final-memories-btn" class="action-btn"
+        style="position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; display: none; opacity: 0; transition: opacity 1s ease;">
+        Memories
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+    </button>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
