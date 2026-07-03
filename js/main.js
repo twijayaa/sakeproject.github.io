@@ -1,19 +1,19 @@
 const scenes = [
     { text: "Ada sesuatu yang menunggu lama.", btnText: "Lewati" },
-    { text: "Bukan aku tidak ingin mengatakannya.", btnText: "Lewati" },
-    { text: "Aku hanya belum ketemu waktu yang tepat.", btnText: "Lewati" },
+    { text: "Bukan aku ga mau ngomongin ini sebelumnya.", btnText: "Lewati" },
+    { text: "Cuma belum ketemu waktu yang pas.", btnText: "Lewati" },
     { text: "Selama hampir satu tahun, semua ini cuma kusimpan sendiri.", btnText: "Lewati" },
-    { text: "Aku pikir... mungkin perasaan ini akan hilang kalo dibiarkan.", btnText: "Lewati" },
-    { text: "Setiap hari yang berlalu justru membuatku semakin yakin.", btnText: "Lewati" },
-    { text: "Hari ini, aku memilih untuk tidak menyimpannya sendirian.", btnText: "Lewati" },
+    { text: "Aku pikir... mungkin perasaan ini akan hilang kalo dibiarin.", btnText: "Lewati" },
+    { text: "Semakin hari malah semakin yakin.", btnText: "Lewati" },
+    { text: "Hari ini, aku memilih untuk ga menyimpannya sendirian.", btnText: "Lewati" },
     { text: "Karena ada yang seharusnya sudah kamu ketahui sejak lama.", btnText: "Lewati" },
     { text: "Aku punya perasaan sama kamu.", btnText: "Lewati" },
-    { text: "Aku ga bagaimana jawabanmu nanti.", btnText: "Lewati" },
-    { text: "Dan aku juga tidak maksa kamu buat merasakan hal yang sama.", btnText: "Lewati" },
+    { text: "Aku ga tau gimana jawabanmu nanti.", btnText: "Lewati" },
+    { text: "Dan aku juga ga maksa kamu buat merasakan hal yang sama.", btnText: "Lewati" },
     { text: "Aku cuma pengen jujur.", btnText: "Lewati" },
     { text: "Setidaknya sekali.", btnText: "Lewati" },
-    { text: "Terima kasih, kamu telah menjadi seseorang yang berarti dan menghibur dalam hidupku.", btnText: "Lewati" },
-    { text: "Apa pun jawabanmu nanti...<br>Aku tetep bersyukur karena akhirnya aku sudah menyampaikan semua yang selama ini kupendam. (WKWK)", btnText: "Lewati" },
+    { text: "Terima kasih, kamu sudah menjadi seseorang yang berarti dan menghibur dalam hidupku.", btnText: "Lewati" },
+    { text: "Apapun jawabanmu nanti...<br>Aku tetep bersyukur karena akhirnya aku sudah menyampaikan semua yang selama ini kupendam. (WKWK)", btnText: "Lewati" },
     { text: "Thank you woikk!! 🤍", btnText: "MEMORIES" }
 ];
 
