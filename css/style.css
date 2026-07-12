@@ -238,6 +238,15 @@ body {
     margin: 0;
 }
 
+.chapter-text {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 300;
+    line-height: 1.8;
+    max-width: 800px;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.9);
+}
+
 /* Button */
 .action-btn {
     display: inline-flex;
@@ -857,41 +866,19 @@ body {
 .record-wrapper {
     width: 110px;
     height: 110px;
-    border-radius: 50%;
-    padding: 4px;
-    background: linear-gradient(135deg, rgba(255, 138, 128, .3), rgba(255, 138, 128, 0));
+    border-radius: 12px;
+    padding: 3px;
+    background: linear-gradient(135deg, rgba(255, 138, 128, 0.8), rgba(255, 182, 170, 0.2));
     margin-bottom: 1.5rem;
-    box-shadow: 0 5px 20px rgba(255, 138, 128, 0.15);
+    box-shadow: 0 0 20px rgba(255, 138, 128, 0.5);
 }
 
 .record {
     width: 100%;
     height: 100%;
-    background: #111;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #333;
-    background-image: repeating-radial-gradient(#111 0, #111 2px, #1a1a1a 3px, #1a1a1a 4px);
-    transition: transform 0.2s linear;
-}
-
-.record.playing {
-    animation: spin 4s linear infinite;
-}
-
-.record-center {
-    width: 30%;
-    height: 30%;
-    background: var(--primary-color);
-    border-radius: 50%;
-    border: 2px solid #fff;
-    box-shadow: 0 0 10px rgba(255, 138, 128, 0.5);
-}
-
-@keyframes spin {
-    100% { transform: rotate(360deg); }
+    background: url('../assets/music/cover.png') center/cover;
+    border-radius: 9px;
+    display: block;
 }
 
 .track-info {
@@ -1089,3 +1076,74 @@ body {
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
 }
+.scrolling-text-wrapper {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    scrollbar-width: none;
+}
+.scrolling-text-wrapper::-webkit-scrollbar {
+    display: none;
+}
+.closing-paragraph {
+    max-width: 600px;
+    line-height: 1.8;
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+
+.heart-scene {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: fixed;
+    inset: 0;
+    background: var(--bg-color);
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+.heart-text-mask {
+    width: 300px;
+    height: 300px;
+    color: white;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    text-align: justify;
+    word-break: break-all;
+    overflow: hidden;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    opacity: 0;
+    transform: translateY(20px);
+}
+.ily-text {
+    color: white;
+    font-size: 2rem;
+    margin-top: 2rem;
+    letter-spacing: 0.2em;
+    opacity: 0;
+    font-weight: 300;
+}
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+

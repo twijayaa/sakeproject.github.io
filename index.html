@@ -12,6 +12,22 @@
 </head>
 
 <body>
+    <!-- Error Catcher -->
+    <script>
+        window.addEventListener('error', function (e) {
+            const errDiv = document.createElement('div');
+            errDiv.style.position = 'fixed';
+            errDiv.style.top = '10px';
+            errDiv.style.left = '10px';
+            errDiv.style.zIndex = '999999';
+            errDiv.style.background = 'red';
+            errDiv.style.color = 'white';
+            errDiv.style.padding = '10px';
+            errDiv.style.fontSize = '12px';
+            errDiv.textContent = 'Error: ' + e.message + ' at ' + e.filename + ':' + e.lineno;
+            document.body.appendChild(errDiv);
+        });
+    </script>
     <!-- Fullscreen Overlay -->
     <div id="fullscreen-overlay" class="fullscreen-overlay">
         <div class="overlay-content">
@@ -29,20 +45,18 @@
     </div>
 
     <!-- Audio Element -->
-    <audio id="bg-music" src="assets/music/Justin Timberlake - Mirrors.mp3" preload="metadata"></audio>
+    <audio id="bg-music" src="assets/music/Nadhif Basalamah - Penjaga Hati.mp3" preload="metadata"></audio>
 
     <!-- Side Panels -->
     <div class="side-panel left-panel hidden" id="left-panel">
         <button class="toggle-btn toggle-left" id="toggle-left-btn">&gt;</button>
         <div class="music-player">
             <div class="record-wrapper">
-                <div class="record" id="record-disk">
-                    <div class="record-center"></div>
-                </div>
+                <div class="record" id="record-disk"></div>
             </div>
             <div class="track-info">
-                <div class="track-title">Mirrors</div>
-                <div class="track-artist">Justin Timberlake</div>
+                <div class="track-title">Penjaga Hati</div>
+                <div class="track-artist">Nadhif Basalamah</div>
             </div>
             <button id="play-pause-btn" class="play-btn">
                 <svg class="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -63,6 +77,7 @@
         </div>
     </div>
 
+    <!-- Panel Lirik (Kanan) -->
     <div class="side-panel right-panel hidden" id="right-panel">
         <button class="toggle-btn toggle-right" id="toggle-right-btn">&lt;</button>
         <div class="lyrics-wrapper">
@@ -71,6 +86,7 @@
             </div>
         </div>
     </div>
+
     <!-- Background effects -->
     <div class="background">
         <div class="glow glow-1"></div>
@@ -115,68 +131,57 @@
                 <span class="badge-text">Sebuah Pesan</span>
             </div>
 
-            <h1 id="main-text" class="main-text">Ada sesuatu yang telah menunggu lama.</h1>
+            <div id="main-text" class="main-text chapter-text">Setelah semua keberanian yang pernah aku kumpulkan untuk
+                mengungkapkan perasaan waktu itu, ternyata ada satu hal yang masih belum selesai aku
+                sampaikan.<br><br>Situs ini bukan kubuat untuk mengulang cerita lama. Tapi untuk melanjutkan perjalanan
+                yang pernah kita mulai.</div>
         </div>
 
-        <!-- Final Choice Scene -->
+        <!-- Final Choice Scene (Chapter 7) -->
         <div id="final-scene" class="scene scene-hidden" style="display: none; width: 100%;">
-            <div class="badge" id="final-badge">
+            <div class="badge" id="final-badge" style="opacity: 0; transition: opacity 2s ease;">
                 <span class="badge-icon">✦</span>
-                <span class="badge-text" id="final-badge-text">Akhir Perjalanan</span>
+                <span class="badge-text" id="final-badge-text">Sebuah Pertanyaan</span>
             </div>
 
-            <h1 class="main-text" id="final-title" style="margin-bottom: 1.5rem; font-size: 2.2rem;">Terima kasih sudah
-                membaca sampai akhir.</h1>
+            <h1 class="main-text" id="final-title"
+                style="margin-bottom: 1rem; font-size: 2.8rem; opacity: 0; transition: opacity 3s ease 1s;">Maukah kamu
+                menjadi pacarku?</h1>
 
             <div id="final-content-wrapper"
                 style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-                <p class="final-paragraph" id="final-paragraph"
-                    style="margin-bottom: 2.5rem; font-size: 1.05rem; color: rgba(255, 255, 255, 0.7); line-height: 1.6; max-width: 600px;">
-                    Perasaan bukan sesuatu yang harus diputuskan dalam beberapa menit. Yang paling penting bagiku adalah
-                    kamu sudah mengetahui semua yang
-                    selama ini kusimpan.
-                </p>
 
                 <div class="cards-container" id="cards-container"
-                    style="display: flex; gap: 1.5rem; justify-content: center; opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); flex-wrap: wrap;">
-                    <div class="glass-card" id="card-time">
-                        <h3 class="card-title">🤍 Aku butuh waktu</h3>
-                        <p class="card-desc">Aku ingin memikirkan semuanya terlebih dahulu.</p>
+                    style="display: flex; gap: 1.5rem; justify-content: center; opacity: 0; transform: translateY(20px); transition: all 1.5s cubic-bezier(0.25, 1, 0.5, 1); flex-wrap: wrap;">
+                    <div class="glass-card" id="card-yes" style="cursor: pointer;">
+                        <h3 class="card-title">🤍 Iya, aku mau.</h3>
                     </div>
-                    <div class="glass-card" id="card-reply">
-                        <h3 class="card-title">💌 Aku ingin menjawab</h3>
-                        <p class="card-desc">Aku ingin menyampaikan sesuatu.</p>
+                    <div class="glass-card" id="card-think" style="cursor: pointer;">
+                        <h3 class="card-title">🌷 Boleh aku memikirkannya dulu.</h3>
                     </div>
-                </div>
-
-                <div id="reply-container"
-                    style="display: none; opacity: 0; transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); width: 100%; max-width: 500px;">
-                    <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem; font-size: 0.95rem;">Jika kamu ingin
-                        mengatakan sesuatu, tuliskan di sini.</p>
-
-                    <textarea class="glass-textarea" id="reply-textarea"
-                        placeholder="Tuliskan apa pun yang ingin kamu sampaikan..." rows="5"></textarea>
-                    <button class="action-btn premium-btn" id="send-reply-btn"
-                        style="margin-top: 1.5rem; width: 100%; justify-content: center;">
-                        <span id="send-reply-text">Kirim Balasan</span>
-                    </button>
                 </div>
 
                 <div id="confirm-time-container"
-                    style="display: none; opacity: 0; transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); flex-direction: column; align-items: center; margin-top: -1rem;">
-                    <button class="action-btn" id="finish-btn">Selesai</button>
+                    style="display: none; opacity: 0; transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); flex-direction: column; align-items: center; margin-top: 0.5rem;">
+                    <p class="final-paragraph" id="final-paragraph"
+                        style="margin-bottom: 1.5rem; font-size: 1.1rem; color: rgba(255, 255, 255, 0.8); line-height: 1.6; max-width: 600px; text-align: center;">
+                    </p>
+                    <button class="action-btn premium-btn" id="finish-btn">
+                        Lanjut
+                        <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Reading Progress and Skip Button -->
-    <div class="scene-progress-container">
-        <div class="scene-progress" id="scene-progress"></div>
-    </div>
-
     <button id="action-btn" class="action-btn skip-btn">
-        <span id="btn-text">Lewati</span>
+        <span id="btn-text">Lanjut</span>
         <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -184,64 +189,58 @@
         </svg>
     </button>
 
-    <!-- Closing Scene -->
+    <!-- Closing Scene (Chapter 8) -->
     <div id="closing-scene" class="closing-scene"
-        style="display: none; opacity: 0; overflow-y: auto; overflow-x: hidden; flex-direction: column; justify-content: flex-start; scroll-behavior: smooth;">
+        style="display: none; opacity: 0; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; width: 100vw; box-sizing: border-box; position: relative;">
 
-        <!-- Fireflies specifically for the memories scene -->
-        <div id="closing-fireflies" class="closing-fireflies"></div>
-
-        <div class="heart-wrapper"
-            style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative;">
-            <div class="heart-center">
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="heart-text-svg">
-                    <path id="heartPath"
-                        d="M 100, 50 C 100, 50 80, 20 40, 20 C 0, 20 0, 70 0, 70 C 0, 110 100, 180 100, 180 C 100, 180 200, 110 200, 70 C 200, 70 200, 20 160, 20 C 120, 20 100, 50 100, 50 Z"
-                        fill="none" />
-                    <text class="heart-text-glow" font-size="15" font-weight="600" letter-spacing="3"
-                        text-anchor="middle">
-                        <textPath href="#heartPath" startOffset="50%">
-                            Chelssea • Chelssea • Chelssea • Chelssea • Chelssea • Chelssea
-                        </textPath>
-                    </text>
-                </svg>
+        <!-- Teks Bab Baru (Dengan Fade Hitam) -->
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 650px;">
+            <div class="badge" style="margin-bottom: 2rem;">
+                <span class="badge-icon">✦</span>
+                <span class="badge-text">Penutup</span>
             </div>
 
-            <div class="scroll-down-indicator"
-                style="position: absolute; bottom: 3rem; color: rgba(255, 138, 128, 0.7);">
-                Memories
-                <br>↓
+            <h1 class="main-text" style="font-size: 2.8rem; margin-bottom: 2.5rem; text-align: center;">Pesanku Untukmu
+            </h1>
+
+            <div class="scrolling-text-wrapper"
+                style="width: 100%; height: 50vh; overflow-y: auto; scroll-behavior: smooth; position: relative; padding: 1rem 0;">
+                <div id="closing-text-container"
+                    style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                    <!-- Text will be generated via JS -->
+                </div>
             </div>
         </div>
-
-        <div id="journey-container" class="journey-container">
-            <!-- JS will append journey items here -->
-        </div>
-
-        <div class="closing-message"
-            style="text-align: center; margin: 2rem 2rem 6rem 2rem; color: rgba(255, 138, 128, 0.8); font-style: italic; font-size: 1.1rem; line-height: 1.6; animation: pulseMessage 3s infinite alternate;">
-            "udah ah, aku capek buatnya, <br>kapan-kapan kita buat yang lebih wow yeahh :D"
-        </div>
-
-        <button id="back-to-start-btn" class="back-btn"
-            style="position: relative; margin: 2rem auto 4rem auto; bottom: 0; right: 0;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
-            Kembali
-        </button>
     </div>
 
-    <!-- Memories Button for Final Scene -->
-    <button id="final-memories-btn" class="action-btn"
-        style="position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; display: none; opacity: 0; transition: opacity 1s ease;">
-        Memories
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" />
-        </svg>
-    </button>
+    <!-- Heart Scene (Final) -->
+    <div id="heart-scene" class="heart-scene">
+        <div class="heart-text-mask">
+            Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya
+            Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn
+            Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea
+            Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya
+            Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn
+            Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea
+            Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya
+            Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn
+            Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea
+            Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya
+            Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn
+            Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea
+            Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya
+            Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn
+            Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea
+            Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya
+            Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn
+            Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea
+            Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya
+            Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn
+            Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea Chaelyn Asya Chelssea
+            Chaelyn Asya Chelssea Chaelyn Asya Chelssea
+        </div>
+        <h2 class="ily-text">I LOVE YOU.</h2>
+    </div>
 
     <script src="js/main.js"></script>
 </body>

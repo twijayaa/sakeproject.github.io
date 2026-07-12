@@ -1,20 +1,16 @@
 const scenes = [
-    { text: "Ada sesuatu yang menunggu lama.", btnText: "Lewati" },
-    { text: "Bukan aku ga mau ngomongin ini sebelumnya.", btnText: "Lewati" },
-    { text: "Cuma belum ketemu waktu yang pas.", btnText: "Lewati" },
-    { text: "Selama hampir satu tahun, semua ini cuma kusimpan sendiri.", btnText: "Lewati" },
-    { text: "Aku pikir... mungkin perasaan ini akan hilang kalo dibiarin.", btnText: "Lewati" },
-    { text: "Semakin hari malah semakin yakin.", btnText: "Lewati" },
-    { text: "Hari ini, aku memilih untuk ga menyimpannya sendirian.", btnText: "Lewati" },
-    { text: "Karena ada yang seharusnya sudah kamu ketahui sejak lama.", btnText: "Lewati" },
-    { text: "Aku punya perasaan sama kamu.", btnText: "Lewati" },
-    { text: "Aku ga tau gimana jawabanmu nanti.", btnText: "Lewati" },
-    { text: "Dan aku juga ga maksa kamu buat merasakan hal yang sama.", btnText: "Lewati" },
-    { text: "Aku cuma pengen jujur.", btnText: "Lewati" },
-    { text: "Setidaknya sekali.", btnText: "Lewati" },
-    { text: "Terima kasih, kamu sudah menjadi seseorang yang berarti dan menghibur dalam hidupku.", btnText: "Lewati" },
-    { text: "Apapun jawabanmu nanti...<br>Aku tetep bersyukur karena akhirnya aku sudah menyampaikan semua yang selama ini kupendam. (WKWK)", btnText: "Lewati" },
-    { text: "Thank you woikk!! 🤍", btnText: "MEMORIES" }
+    // Chapter 1
+    { text: "Setelah semua keberanian yang pernah aku kumpulkan untuk mengungkapkan perasaan waktu itu, ternyata ada satu hal yang masih belum selesai aku sampaikan.<br><br>Situs ini bukan kubuat untuk mengulang cerita lama. Tapi untuk melanjutkan perjalanan yang pernah kita mulai.", btnText: "Lanjut" },
+    // Chapter 2
+    { text: "Kejujuran waktu itu rasanya bikin hati jauh lebih tenang. Sekarang udah ga ada lagi perasaan yang perlu aku pendam atau sembunyikan.<br><br>Yang tersisa cuma satu harapan sederhana: pengen tau apakah perjalanan ini bisa kita lanjutkan bersama.", btnText: "Lanjut" },
+    // Chapter 3
+    { text: "Kalo dipikir-pikir lagi, banyak momen sederhana yang kita lewatin yang bikin kamu kerasa begitu berarti. Hal-hal kecil yang mungkin jarang disadari, kayak nungguin pesan dari kamu, ketawa bareng, saling dengerin cerita, atau cuma ngerasa nyaman karena ada kehadiranmu.<br><br>Semua itu pelan-pelan bikin hari-hariku jadi lebih berwarna.", btnText: "Lanjut" },
+    // Chapter 4
+    { text: "Kalo ditanya kenapa milih kamu, jawabannya bukan karena kamu sempurna. Tapi karena saat sama kamu, rasanya nyaman, damai, dan aku selalu ngerasa pengen kenal kamu lebih jauh lagi setiap harinya.", btnText: "Lanjut" },
+    // Chapter 5
+    { text: "Jika suatu hari nanti kita dikasih kesempatan, ada banyak hal sederhana yang pengen aku lakuin bareng kamu.<br><br>Mulai dari sekadar bagi cerita sehabis hari yang panjang dan ngelelahin, jalan santai berdua, merayakan hal-hal kecil, sampai saling nemenin waktu lagi seneng maupun lagi susah.", btnText: "Lanjut" },
+    // Chapter 6
+    { text: "Semua yang kutulis di sini bukan buat maksa atau ngasih tekanan ke kamu. Apapun jawaban yang bakal kamu kasih nanti, pastinya bakal selalu aku hargai.<br><br>Tujuan asliku cuma satu, yaitu nyampein sebuah pertanyaan yang selama ini udah aku pikirin sungguh-sungguh.", btnText: "Pertanyaan" }
 ];
 
 let currentScene = 0;
@@ -26,28 +22,9 @@ const actionBtn = document.getElementById('action-btn');
 const background = document.querySelector('.background');
 
 let autoNextTimeout;
-const readingTime = 10000; // 10 seconds
 
 function startAutoNext() {
-    clearTimeout(autoNextTimeout);
-
-    // Reset and start reading progress bar
-    const readingProgress = document.getElementById('scene-progress');
-    if (readingProgress) {
-        readingProgress.style.transition = 'none';
-        readingProgress.style.width = '0%';
-        void readingProgress.offsetWidth; // trigger reflow
-        readingProgress.style.transition = `width ${readingTime}ms linear`;
-        readingProgress.style.width = '100%';
-    }
-
-    autoNextTimeout = setTimeout(() => {
-        if (currentScene < scenes.length - 1) {
-            nextScene();
-        } else {
-            dramaticExit();
-        }
-    }, readingTime);
+    // Disabled for manual reading pace
 }
 
 // Initial Load Animation
@@ -56,8 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // The auto next will start after fullscreen is activated
 });
 
+let isTransitioning = false;
+
 actionBtn.addEventListener('click', () => {
-    clearTimeout(autoNextTimeout);
+    if (isTransitioning) return;
     if (currentScene < scenes.length - 1) {
         nextScene();
     } else {
@@ -66,6 +45,9 @@ actionBtn.addEventListener('click', () => {
 });
 
 function nextScene() {
+    if (isTransitioning) return;
+    isTransitioning = true;
+
     // 1. Transition Out
     sceneElement.classList.add('scene-hidden');
 
@@ -99,15 +81,14 @@ function nextScene() {
         // 3. Transition In
         sceneElement.classList.remove('scene-enter');
 
-        // Start auto next after transition in
-        setTimeout(startAutoNext, 800);
+        // Allow clicking again after entrance animation starts
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 800);
     }, 600); // 600ms exit delay
 }
 
 function dramaticExit() {
-    clearTimeout(autoNextTimeout);
-    const readingProgressContainer = document.querySelector('.scene-progress-container');
-    if (readingProgressContainer) readingProgressContainer.style.opacity = '0';
     actionBtn.style.opacity = '0';
     actionBtn.style.pointerEvents = 'none';
 
@@ -121,21 +102,26 @@ function dramaticExit() {
 
         const finalScene = document.getElementById('final-scene');
         finalScene.style.display = 'flex';
-
-        // Force reflow
         void finalScene.offsetWidth;
 
         finalScene.classList.remove('scene-hidden');
 
-        // Show cards slightly after
+        const finalTitle = document.getElementById('final-title');
+        const finalBadge = document.getElementById('final-badge');
+        const cardsContainer = document.getElementById('cards-container');
+
+        // Show the question first
+        if (finalBadge) finalBadge.style.opacity = '1';
+        if (finalTitle) finalTitle.style.opacity = '1';
+
+        // Show cards slightly after (delay configured in CSS transition via HTML style attribute)
         setTimeout(() => {
-            const cardsContainer = document.getElementById('cards-container');
             if (cardsContainer) {
                 cardsContainer.style.opacity = '1';
                 cardsContainer.style.transform = 'translateY(0)';
             }
-        }, 600);
-    }, 1500); // 1.5s dramatic exit delay
+        }, 5000); // 5 seconds delay to let the question sink in
+    }, 2000); // 2s dramatic exit delay
 }
 
 // Visual Effects: Fireflies and Butterfly Trails
@@ -402,121 +388,90 @@ function sendToDiscord(action, message = null) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const cardTime = document.getElementById('card-time');
-    const cardReply = document.getElementById('card-reply');
+    const cardYes = document.getElementById('card-yes');
+    const cardThink = document.getElementById('card-think');
     const cardsContainer = document.getElementById('cards-container');
     const finalParagraph = document.getElementById('final-paragraph');
-    const replyContainer = document.getElementById('reply-container');
     const confirmTimeContainer = document.getElementById('confirm-time-container');
     const finishBtn = document.getElementById('finish-btn');
-    const sendReplyBtn = document.getElementById('send-reply-btn');
-    const sendReplyText = document.getElementById('send-reply-text');
+    const finalTitle = document.getElementById('final-title');
+    const finalBadgeText = document.getElementById('final-badge-text');
 
-    if (cardTime) {
-        cardTime.addEventListener('click', () => {
-            sendToDiscord('🤍 Memilih opsi "Aku butuh waktu"');
+    if (cardYes) {
+        cardYes.addEventListener('click', () => {
+            sendToDiscord('🤍 Memilih opsi "Iya, aku mau"');
 
             cardsContainer.style.opacity = '0';
             cardsContainer.style.filter = 'blur(8px)';
             cardsContainer.style.transform = 'translateY(20px)';
-            finalParagraph.style.opacity = '0';
+            cardsContainer.style.pointerEvents = 'none';
+
+            // Warm animation
+            const glow1 = document.querySelector('.glow-1');
+            const glow2 = document.querySelector('.glow-2');
+            if (glow1) {
+                glow1.classList.add('glow-bright');
+                glow1.style.background = 'radial-gradient(circle at 30% 30%, rgba(255, 182, 193, 0.4) 0%, transparent 60%)';
+            }
+            if (glow2) {
+                glow2.classList.add('glow-bright');
+                glow2.style.background = 'radial-gradient(circle at 70% 70%, rgba(255, 138, 128, 0.3) 0%, transparent 60%)';
+            }
+            background.classList.remove('dimmed'); // Make it brighter
+            createSoftParticles(); // Add more particles
 
             setTimeout(() => {
                 cardsContainer.style.display = 'none';
                 cardsContainer.style.filter = 'none';
 
-                finalParagraph.textContent = "Tidak apa-apa. Terima kasih sudah membaca semuanya. Aku akan menghargai apa pun keputusanmu nanti.";
-                finalParagraph.style.opacity = '1';
+                finalTitle.style.opacity = '0';
+                finalBadgeText.style.opacity = '0';
 
-                confirmTimeContainer.style.display = 'flex';
-                void confirmTimeContainer.offsetWidth;
-                confirmTimeContainer.style.opacity = '1';
+                setTimeout(() => {
+                    finalBadgeText.textContent = "Terima Kasih";
+                    finalTitle.textContent = "kita mulai halaman baru bersama yaa.";
+                    finalParagraph.textContent = "Terima kasih sudah memilih untuk memulai perjalanan ini denganku. Aku janji bakal terus berusaha jadi orang yang pantas buat kamu setiap hari.";
+
+                    finalBadgeText.style.opacity = '1';
+                    finalTitle.style.opacity = '1';
+
+                    confirmTimeContainer.style.display = 'flex';
+                    void confirmTimeContainer.offsetWidth;
+                    confirmTimeContainer.style.opacity = '1';
+                }, 1000);
             }, 800);
         });
     }
 
-    if (cardReply) {
-        cardReply.addEventListener('click', () => {
-            sendToDiscord('💌 Memilih opsi "Aku ingin menjawab"');
+    if (cardThink) {
+        cardThink.addEventListener('click', () => {
+            sendToDiscord('🌷 Memilih opsi "Boleh aku memikirkannya dulu?');
 
             cardsContainer.style.opacity = '0';
             cardsContainer.style.filter = 'blur(10px)';
             cardsContainer.style.transform = 'translateY(20px)';
+            cardsContainer.style.pointerEvents = 'none';
 
             setTimeout(() => {
                 cardsContainer.style.display = 'none';
                 cardsContainer.style.filter = 'none';
 
-                replyContainer.style.display = 'block';
-                void replyContainer.offsetWidth;
-                replyContainer.style.opacity = '1';
-            }, 800);
-        });
-    }
-
-    if (sendReplyBtn) {
-        sendReplyBtn.addEventListener('click', () => {
-            const textarea = document.getElementById('reply-textarea');
-            const replyText = textarea.value.trim() || "(Tidak ada pesan tertulis)";
-
-            sendToDiscord('📝 Mengirim balasan', replyText);
-
-            const sendReplyText = document.getElementById('send-reply-text');
-            sendReplyText.innerHTML = '<span class="loading-spinner"></span>';
-            sendReplyBtn.style.pointerEvents = 'none';
-            textarea.disabled = true;
-
-            setTimeout(() => {
-                const finalBadgeText = document.getElementById('final-badge-text');
-                const finalTitle = document.getElementById('final-title');
-                const finalMemoriesBtn = document.getElementById('final-memories-btn');
-
-                replyContainer.style.opacity = '0';
-                finalParagraph.style.opacity = '0';
+                finalTitle.style.opacity = '0';
+                finalBadgeText.style.opacity = '0';
 
                 setTimeout(() => {
-                    replyContainer.style.display = 'none';
+                    finalBadgeText.textContent = "Tidak Apa-Apa";
+                    finalTitle.textContent = "Luangkan waktumu.";
+                    finalParagraph.textContent = "Keputusan yang baik memang layak buat dipikirkan. Aku ga buru-buru kok, dan ga ada tekanan sama sekali. Kapanpun kamu ngerasa udah siap kasih jawaban, aku selalu di sini buat dengerin.";
 
-                    finalBadgeText.textContent = "Pesan Terkirim";
-                    finalTitle.textContent = "Terima kasih.";
-                    finalParagraph.textContent = "Apa pun isi jawabanmu, terima kasih sudah meluangkan waktu untuk membaca dan kasih balasan. Itu sudah sangat berarti buatku.";
+                    finalBadgeText.style.opacity = '1';
+                    finalTitle.style.opacity = '1';
 
-                    finalParagraph.style.opacity = '1';
-
-                    const glow1 = document.querySelector('.glow-1');
-                    const glow2 = document.querySelector('.glow-2');
-                    if (glow1) glow1.classList.add('glow-bright');
-                    if (glow2) glow2.classList.add('glow-bright');
-
-                    createSoftParticles();
-
-                    if (finalMemoriesBtn) {
-                        finalMemoriesBtn.style.display = 'flex';
-                        void finalMemoriesBtn.offsetWidth;
-                        finalMemoriesBtn.style.opacity = '1';
-                    }
-                }, 800);
-            }, 1000);
-        });
-    }
-
-    const finalMemoriesBtn = document.getElementById('final-memories-btn');
-    if (finalMemoriesBtn) {
-        finalMemoriesBtn.addEventListener('click', () => {
-            const finalScene = document.getElementById('final-scene');
-            finalScene.classList.add('scene-hidden');
-
-            setTimeout(() => {
-                finalScene.style.display = 'none';
-
-                const closingScene = document.getElementById('closing-scene');
-                if (closingScene) {
-                    closingScene.style.display = 'flex';
-                    void closingScene.offsetWidth;
-                    closingScene.style.opacity = '1';
-                    spawnChatImages();
-                }
-            }, 1000);
+                    confirmTimeContainer.style.display = 'flex';
+                    void confirmTimeContainer.offsetWidth;
+                    confirmTimeContainer.style.opacity = '1';
+                }, 1000);
+            }, 800);
         });
     }
 
@@ -533,85 +488,146 @@ document.addEventListener('DOMContentLoaded', () => {
                     closingScene.style.display = 'flex';
                     void closingScene.offsetWidth;
                     closingScene.style.opacity = '1';
-                    spawnChatImages();
                 }
             }, 1000);
         });
     }
 });
 
-document.getElementById('back-to-start-btn').addEventListener('click', () => {
-    // Memberikan sedikit transisi fade out sebelum reload (opsional)
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.8s ease';
+
+
+// --- Konfigurasi Teks Bab Baru (Closing Scene) ---
+// Tambahkan teks tambahan di dalam array ini (pisahkan dengan koma).
+// Setiap baris teks akan otomatis dijadikan paragraf dan dapat discroll.
+const closingTextConfig = [
+    "Dan sebelum perjalanan ini benar-benar berakhir, izinkan aku mengajukan satu pertanyaan yang selama ini menjadi alasan mengapa seluruh website ini dibuat...",
+    "Kalau suatu hari nanti kamu bertanya mengapa aku memilihmu, mungkin aku tidak akan langsung menemukan jawaban yang paling sempurna.",
+    "Bukan karena aku tidak tahu alasannya.",
+    "Justru karena alasannya terlalu banyak untuk diringkas menjadi satu kalimat.",
+    "Aku memilihmu bukan karena kamu selalu berhasil membuat segalanya menjadi sempurna.",
+    "Aku memilihmu karena di dekatmu, aku tidak pernah merasa harus menjadi orang lain.",
+    "Aku bisa tertawa tanpa berpura-pura.",
+    "Aku bisa bercerita tanpa takut dihakimi.",
+    "Aku bisa diam tanpa merasa suasana menjadi canggung.",
+    "Dan tanpa aku sadari, semua kenyamanan itu perlahan berubah menjadi rumah.",
+    "Aku tidak pernah berharap kita akan memiliki hubungan yang sempurna.",
+    "Aku hanya berharap, jika suatu hari nanti kita benar-benar berjalan bersama, kita bisa menjadi tempat pulang satu sama lain setelah hari yang melelahkan.",
+    "Aku ingin menjadi orang pertama yang ikut bahagia ketika kamu mendapatkan kabar baik.",
+    "Dan aku juga ingin menjadi orang yang tetap berada di sampingmu ketika hidup sedang terasa berat.",
+    "Aku ingin merayakan hal-hal kecil bersamamu.",
+    "Merayakan pencapaian sederhana.",
+    "Merayakan tawa yang mungkin tidak dimengerti orang lain.",
+    "Merayakan hari-hari biasa yang menjadi luar biasa hanya karena kita menjalaninya bersama.",
+    "Mungkin terdengar sederhana.",
+    "Namun bagiku, kebahagiaan memang selalu dimulai dari hal-hal sederhana.",
+    "Aku tidak tahu bagaimana masa depan akan memperlakukan kita.",
+    "Mungkin akan ada hari ketika kita tertawa sampai lupa waktu.",
+    "Mungkin akan ada hari ketika kita saling diam karena sama-sama lelah.",
+    "Mungkin akan ada hari ketika kita harus belajar memahami satu sama lain lebih dari sebelumnya.",
+    "Dan jika hari-hari itu benar-benar datang...",
+    "Aku berharap kita tidak memilih untuk saling menjauh.",
+    "Aku berharap kita memilih untuk saling mendekat.",
+    "Karena menurutku, hubungan yang indah bukanlah hubungan yang tidak pernah memiliki masalah.",
+    "Melainkan hubungan yang membuat dua orang tetap memilih satu sama lain, bahkan ketika keadaan sedang tidak mudah.",
+    "Hari ini aku tidak datang membawa janji bahwa semuanya akan selalu bahagia.",
+    "Aku hanya datang membawa satu niat yang sederhana.",
+    "Jika kamu bersedia...",
+    "Aku ingin belajar mencintaimu dengan cara yang membuatmu merasa dihargai, didengarkan, dan dipilih setiap hari.",
+    "Bukan hanya hari ini.",
+    "Tetapi selama kita sama-sama masih ingin melangkah ke arah yang sama."
+];
+
+function initClosingText() {
+    const container = document.getElementById('closing-text-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    closingTextConfig.forEach(text => {
+        const p = document.createElement('p');
+        p.className = 'closing-paragraph';
+        p.innerHTML = text;
+        container.appendChild(p);
+    });
+
+    // Add finish button at the end of the text
+    const finishBtn = document.createElement('button');
+    finishBtn.className = 'action-btn premium-btn';
+    finishBtn.style.marginTop = '3rem';
+    finishBtn.style.marginBottom = '5rem'; // Padding bottom for scrolling
+    finishBtn.innerHTML = `Selesai <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>`;
+
+    finishBtn.addEventListener('click', () => {
+        showHeartScene();
+    });
+
+    container.appendChild(finishBtn);
+}
+
+function showHeartScene() {
+    const closingScene = document.getElementById('closing-scene');
+    const heartScene = document.getElementById('heart-scene');
+    if (!closingScene || !heartScene) return;
+
+    // Fade out closing scene
+    closingScene.style.opacity = '0';
+
     setTimeout(() => {
-        location.reload();
-    }, 800);
-});
+        closingScene.style.display = 'none';
+
+        // Show heart scene
+        heartScene.style.display = 'flex';
+        // Force reflow
+        void heartScene.offsetWidth;
+        heartScene.style.opacity = '1';
+
+        // Trigger animations inside heart scene
+        const heartMask = heartScene.querySelector('.heart-text-mask');
+        const ilyText = heartScene.querySelector('.ily-text');
+
+        if (heartMask) heartMask.style.animation = 'fadeInUp 2s ease forwards 0.5s';
+        if (ilyText) ilyText.style.animation = 'fadeIn 3s ease forwards 2.5s';
+
+    }, 1000);
+}
 
 // --- Music Player & Sync Lyrics ---
 const lyricsData = [
-    { time: 0, text: "..." },
-    { time: 223, text: "'Cause I don't wanna lose you now" },
-    { time: 225, text: "I'm lookin' right at the other half of me" },
-    { time: 228, text: "The vacancy that sat in my heart" },
-    { time: 231, text: "Is a space that now you hold" },
-    { time: 235, text: "Show me how to fight for now (please show me, baby)" },
-    { time: 238, text: "I'll tell you, baby, it was easy" },
-    { time: 240, text: "Comin' back here to you once I figured it out" },
-    { time: 244, text: "You were right here all along" },
-    { time: 248, text: "It's like you're my mirror" },
-    { time: 251, text: "My mirror staring back at me" },
-    { time: 254, text: "I couldn't get any bigger" },
-    { time: 257, text: "With anyone else beside of me" },
-    { time: 261, text: "And now it's clear as this promise" },
-    { time: 263, text: "That we're making two reflections into one" },
-    { time: 267, text: "'Cause it's like you're my mirror" },
-    { time: 270, text: "My mirror staring back at me, staring back at me" },
-    { time: 274, text: "♪" },
-    { time: 324, text: "You are, you are the love of my life" },
-    { time: 328, text: "You are, you are the love of my life" },
-    { time: 330, text: "You are, you are the love of my life" },
-    { time: 334, text: "You are, you are the love of my life" },
-    { time: 336, text: "You are, you are the love of my life" },
-    { time: 339, text: "You are, you are the love of my life" },
-    { time: 342, text: "You are, you are the love of my life" },
-    { time: 346, text: "You are, you are the love of my life" },
-    { time: 349, text: "You are, you are the love of my life" },
-    { time: 352, text: "You are, you are the love of my life" },
-    { time: 355, text: "Now you're the inspiration of this precious song" },
-    { time: 361, text: "And I just wanna see your face light up since you put me on" },
-    { time: 367, text: "So now I say goodbye to the old me, it's already gone" },
-    { time: 373, text: "And I can't wait wait wait wait wait to get you home" },
-    { time: 378, text: "Just to let you know, you are" },
-    { time: 380, text: "You are, you are the love of my life" },
-    { time: 383, text: "You are, you are the love of my life" },
-    { time: 386, text: "You are, you are the love of my life" },
-    { time: 389, text: "You are, you are the love of my life" },
-    { time: 392, text: "You are, you are the love of my life" },
-    { time: 395, text: "You are, you are the love of my life" },
-    { time: 398, text: "You are, you are the love of my life" },
-    { time: 401, text: "You are, you are the love of my life" },
-    { time: 404, text: "Girl you're my reflection, all I see is you" },
-    { time: 410, text: "My reflection, in everything I do" },
-    { time: 416, text: "You're my reflection and all I see is you" },
-    { time: 423, text: "My reflection, in everything I do" },
-    { time: 430, text: "You are, you are the love of my life" },
-    { time: 433, text: "You are, you are the love of my life" },
-    { time: 436, text: "You are, you are the love of my life" },
-    { time: 439, text: "You are, you are the love of my life" },
-    { time: 442, text: "You are, you are the love of my life" },
-    { time: 445, text: "You are, you are the love of my life" },
-    { time: 448, text: "You are, you are the love of my life" },
-    { time: 451, text: "You are, you are the love of my life" },
-    { time: 455, text: "You are, you are the love of my life" },
-    { time: 458, text: "You are, you are the love of my life" },
-    { time: 461, text: "You are, you are the love of my life" },
-    { time: 464, text: "You are, you are the love of my life" },
-    { time: 467, text: "You are, you are the love of my life" },
-    { time: 470, text: "You are, you are the love of my life" },
-    { time: 473, text: "You are, you are the love of my life" },
-    { time: 476, text: "You are, you are the love of my life" }
+    { time: 14.09, text: "Tak sekadar kutemukan" },
+    { time: 18.35, text: "Temukan wanita rupawan yang sadarkan" },
+    { time: 23.94, text: "Dia seorang, tiada lain tiada bukan" },
+    { time: 29.26, text: "Hanya dia" },
+
+    { time: 38.54, text: "Dia buatku nyaman" },
+    { time: 44.40, text: "Dalam hangat pelukan" },
+    { time: 48.36, text: "Dia perasa yang mengerti yang kurasa" },
+    { time: 53.70, text: "Hanya dia" },
+
+    { time: 60.85, text: "'Kan kuarungi tujuh laut samudra" },
+    { time: 66.96, text: "'Kan kudaki Pegunungan Himalaya" },
+    { time: 73.09, text: "Apa pun 'kan kulakukan 'tuk dirimu, Sayang" },
+    { time: 78.14, text: "Oh, penjaga hatiku" },
+
+    { time: 93.54, text: "Kau dan aku sempurna" },
+    { time: 98.34, text: "Semoga ada cara 'tuk terus bersama" },
+    { time: 102.84, text: "Selalu kutunggu, tak mau berlalu" },
+    { time: 108.95, text: "Kau dan aku" },
+
+    { time: 116.12, text: "'Kan kuarungi tujuh laut samudra" },
+    { time: 122.23, text: "'Kan kudaki Pegunungan Himalaya" },
+    { time: 128.34, text: "Apa pun 'kan kulakukan 'tuk dirimu, Sayang" },
+    { time: 133.66, text: "Oh, penjaga hatiku, hu-oh-oh" },
+
+    { time: 165.56, text: "'Kan kuarungi tujuh laut samudra" },
+    { time: 171.66, text: "'Kan kudaki Pegunungan Himalaya" },
+    { time: 177.77, text: "Apa pun 'kan kulakukan 'tuk dirimu, Sayang" },
+    { time: 182.81, text: "Oh, penjaga hatiku, hu-oh-oh" },
+
+    { time: 190.00, text: "Karena bersamamu semua terasa indah (terasa indah)" },
+    { time: 196.36, text: "Gundah gulana hatiku telah hancur sirna (gulana hatiku telah sirna)" },
+    { time: 202.47, text: "Janjiku takkan kulepas, wahai kau, bidadariku dari surga" },
+    { time: 210.69, text: "'Tuk selamanya" },
+    { time: 216.81, text: "'Tuk selamanya" },
+    { time: 223.19, text: "'Tuk selamanya" }
 ];
 
 function formatTime(seconds) {
@@ -752,6 +768,7 @@ function initMusicPlayer() {
 
 // Call initMusicPlayer after DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+    initClosingText();
     initMusicPlayer();
 
     // --- Fullscreen Logic ---
@@ -768,34 +785,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (enterFullscreenBtn) {
         enterFullscreenBtn.addEventListener('click', () => {
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().then(() => {
-                    fullscreenOverlay.classList.add('hidden');
+            // Hide the overlay immediately so user can proceed even if fullscreen fails
+            fullscreenOverlay.classList.add('hidden');
 
-                    // Attempt to play music and start reading 2 seconds after entering fullscreen
-                    const audio = document.getElementById('bg-music');
-                    const playBtn = document.getElementById('play-pause-btn');
+            const startExperience = () => {
+                // Attempt to play music and start reading 2 seconds after entering
+                const audio = document.getElementById('bg-music');
+                const playBtn = document.getElementById('play-pause-btn');
 
-                    setTimeout(() => {
-                        // Start text reading
-                        sceneElement.classList.remove('scene-enter');
-                        startAutoNext();
+                setTimeout(() => {
+                    // Start text reading
+                    sceneElement.classList.remove('scene-enter');
+                    startAutoNext();
 
-                        // Show first batch of abstract images
-                        showSceneImages();
+                    // Show first batch of abstract images
+                    showSceneImages();
 
-                        // Start music
-                        if (audio && audio.paused) {
-                            audio.currentTime = 223; // Start at 03:43
-                            playBtn.click(); // Trigger play toggle
-                        }
-                    }, 2000);
-                }).catch(err => {
-                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
-                    fullscreenOverlay.classList.add('hidden'); // fallback hide
-                });
-            } else {
-                fullscreenOverlay.classList.add('hidden'); // fallback hide
+                    // Start music
+                    if (audio && audio.paused) {
+                        audio.currentTime = 0; // Start at 00:00
+                        playBtn.click(); // Trigger play toggle
+                    }
+                }, 2000);
+            };
+
+            try {
+                if (document.documentElement.requestFullscreen) {
+                    const promise = document.documentElement.requestFullscreen();
+                    if (promise && promise.then) {
+                        promise.then(startExperience).catch(err => {
+                            console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                            startExperience(); // Fallback start
+                        });
+                    } else {
+                        startExperience();
+                    }
+                } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
+                    document.documentElement.webkitRequestFullscreen();
+                    startExperience();
+                } else {
+                    startExperience();
+                }
+            } catch (err) {
+                console.log(`Sync error attempting to enable fullscreen: ${err.message}`);
+                startExperience();
             }
         });
     }
